@@ -41,6 +41,33 @@ function showFirstQuestion(response) {
       response.json({id: data[0].id, text: data[0].question_text});
     });
 }
+
+function showYesQuestion(response, currentQuestion) {
+  var query = "select id, question_text from questions where " +
+    "id=(select yes_child_index from questions where id="+currentQuestion.id+
+      ");";
+  console.log(query);
+
+  dbquery(query, function(err, data) {
+    if (data && data.length > 0) {
+      response.json({id: data[0].id, text: data[0].question_text});
+    } else {
+      response.json({id: 0, text: ""});
+    }
+  });
+}
+
+function showNoQuestion(response, currentQuestion) {
+  dbquery("select id, question_text from questions where " +
+    "id=(select no_child_index from questions where id="+currentQuestion.id+
+      ");", function(err, data) {
+    if (data && data.length > 0) {
+      response.json({id: data[0].id, text: data[0].question_text});
+    } else {
+      response.json({id: 0, text: ""});
+    }
+  });
+}
 // -Other Functions
 
 // +Routing
@@ -59,30 +86,34 @@ app.get('/next_question', function (request, response) {
 
   dbquery("select * from questions where id="+currentQuestionId+";",
     function (err, data) {
-      if (!data || len(data)==0) {
+      if (!data || data.length==0) {
         showFirstQuestion(response);
         return;
       }
 
-      /*if (answer == true) {
-        dbquery("select yes_question_index from questions where "+
-          " id=" + currentQuestionId + ";", function(err, data) {
-        });
+      if (answer == "yes") {
+        showYesQuestion(response, data[0]);
       } else {
-        // Get no question id
-      }*/
+        showNoQuestion(response, data[0]);
+      }
     });
-
-  /*var rows = dbquery("select * from questions;", function(err, rows) {
-    if (err != null) {
-      response.json({"error": err});
-    } else {
-      response.json(rows);
-    }
-  });
-  console.log(rows);*/
-  //response.json(rows);
 });
+
+app.get("/", function (request, response) {
+  response.put(someHtmlPageFile); // <-- Do this part
+  // Look at how express.js handles html files
+  // API Documentation:
+
+  // Next Question: /next_question?current_id=5&answer=yes
+  // Parameters:
+  // current_id:  the id of the currently visible question. If left out, the
+  //              first question is displayed.
+  // answer:      yes for answering yes, no for answering no. Defaults to no if
+  //              left out.
+
+  // Assignment 1: Do the above
+  // Assignment 2: Figure out how to avoid SQL injection vulnerability
+}
 // -Routing
 
 // +Server
