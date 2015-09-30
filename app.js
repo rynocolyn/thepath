@@ -111,9 +111,13 @@ app.get("/", function (request, response) {
   // answer:      yes for answering yes, no for answering no. Defaults to no if
   //              left out.
 
+  // Limitation: You are not allowed to use the "response" variable to send
+  // over question data
+  // Bonus points if you use jquery
+
   // Assignment 1: Do the above
   // Assignment 2: Figure out how to avoid SQL injection vulnerability
-}
+});
 // -Routing
 
 // +Server
