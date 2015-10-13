@@ -1,0 +1,23 @@
+{
+  "name": "thepath",
+  "version": "0.0.1",
+  "description": "Organically Generated Story",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/carelvwyk/thepath.git"
+  },
+  "author": "Carel van Wyk, Ryno Colyn",
+  "license": "GPL2",
+  "bugs": {
+    "url": "https://github.com/carelvwyk/thepath/issues"
+  },
+  "homepage": "https://github.com/carelvwyk/thepath",
+  "dependencies": {
+    "express": "^4.13.3",
+    "mysql": "^2.9.0"
+  }
+}
